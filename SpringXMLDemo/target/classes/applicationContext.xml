@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+    <!--    <bean id="dateFormat" class="java.text.SimpleDateFormat">-->
+    <!--        <constructor-arg value="dd-MM-yyyy"/>-->
+    <!--    </bean>-->
+    <context:property-placeholder location="classpath:employeeDetails.properties"/>
+
+    <bean id="dateformatter" class="org.example.DateFormatter">
+    </bean>
+
+
+    <bean id="myDepartment" class="org.example.Department">
+        <property name="department" value="${department}"/>
+        <property name="createdOn">
+            <bean factory-bean="dateformatter" factory-method="formatter">
+                <constructor-arg value="${date}"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="emp" class="org.example.Employee">
+        <constructor-arg name="id" value="${id}"></constructor-arg>
+        <constructor-arg name="name" value="${name}"></constructor-arg>
+        <constructor-arg name="email" value="${email}"></constructor-arg>
+        <constructor-arg name="department">
+            <ref bean="myDepartment"/>
+        </constructor-arg>
+        <property name="taskList">
+            <list>
+                <value>Bean</value>
+                <value>Custom Bean</value>
+                <value>Scopes</value>
+            </list>
+        </property>
+
+    </bean>
+</beans>
